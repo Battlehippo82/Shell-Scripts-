@@ -1,0 +1,5 @@
+#!/bin/bash
+#Create new file
+echo "#!/bin/bash" > /home/justin/Scripts/NewScript.sh
+#change permissions for file created
+chmod 777 NewScript.sh 
