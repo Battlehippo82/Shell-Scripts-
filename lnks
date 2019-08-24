@@ -1,0 +1,60 @@
+#!/bin/bash
+## Identify links to a file
+## Usage: lnks file [directory]
+## if number of arguments is equal to zero or greater than 2
+if [ $# -eq 0 -o $# -gt 2 ]; then
+  echo "Usage: lnks file [directory]" 1>&2
+  exit 1
+fi
+## if the first argument is a directory (-d)
+if [ -d "$1" ]; then
+  ## 1>$2 stdout to stderr
+  echo "First arguement cannot be a directory." 1>&2
+  ## 1>$2 stdout to stderr
+  echo " Usage: lnks file [directory]" 1>&2
+  exit 1
+else
+  ## if above statement is false then the file is the first command line argument
+  ## saves the value of $1 in file variable
+  ## because later in the script "set" resets the command line arguments
+  ## if the value of $1 is not saved before the set command is issued, the value is lost.
+file="$1"
+fi
+## if the number of arguments equals 1 then the directory valuable is assisged the value of the working
+## directory (.)
+if [ $# -eq 1 ]; then
+    directory="."
+    ##if the above statement is false then
+    ## second argument a directory?
+  elif [ -d "$2" ]; then
+    directory="$2"
+    ## if the $2(second commad line argument) is not a directory then stout to stderr (1>&2)
+  else
+    echo "Optional second argument must be a directory." 1>&2
+    exit 1
+fi
+
+## check that file exsists and is an ordinary files
+## -f (is file)
+if [ ! -f "$file" ]; then
+  echo "lnks: $file not found or is a special file" 1>&2
+  exit 1
+
+## check link count on file
+## checks the number of links on a file
+set -- $(ls -l "$file")
+
+linkcnt=$2
+if [ "$linkcnt" -eq 1 ]; then
+  echo "lnks: no other hard links to $file" 1>&2
+  exit 0
+fi
+
+## Get the inode of the given file
+set $(ls -i "$file")
+
+inode=$1
+
+## Find and print the files with that inode number
+echo "lnks: using find to search for links..." 1>&2
+find "$directory" -xdev -inum $inode -print

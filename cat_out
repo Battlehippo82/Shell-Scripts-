@@ -1,0 +1,18 @@
+#!/bin/bash
+## if number of arguments is equal to zero
+if [ $# -eq 0 ]
+  then
+      echo "Usage: $0 [-v] filenames..." 1>&2
+      exit 1
+  fi
+## if you use -v then it uses less to display files
+if [ "$1" = "-v" ]
+  then
+    shift
+    ## --argument to cat and less tells these utilities that no more options follow on the command line
+    ## and not to consider leading hyphens in the following list as indicating options
+## $@ each individual parameter will be enclsed in double qoutes
+    less -- "$@"
+  else
+    cat -- "$@"
+fi
