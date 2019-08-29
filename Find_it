@@ -1,0 +1,11 @@
+#!/bin/bash
+
+if [ $# -eq 0 ]; then
+  echo "Usage: Please enter an argument"
+  exit 1
+fi
+## find / will find (and print) every file on the system type (-d) is directory. Send stnderr to stndout
+## take output of that command and use it as input for the grep command
+## -i ignore case
+## $1 first command line argument
+find / type -d 2>&1 | grep -i "$1"
