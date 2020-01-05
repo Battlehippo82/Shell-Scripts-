@@ -1,0 +1,5 @@
+#!/bin/bash
+#Create new file
+echo "#!/usr/bin/env ruby" > /home/justin/Ruby_stuff/NewRuby.rb
+#change permissions for file created
+chmod 777 NewRuby.rb
